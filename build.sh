@@ -1,3 +1,3 @@
 #!/bin/bash
-pdflatex -synctex=1 -interaction=nonstopmode "ANOVA_LRT_equiv".tex
+pdflatex -synctex=1 -interaction=nonstopmode doc.tex
 rm *.out *.toc *.gz *.aux *.log
