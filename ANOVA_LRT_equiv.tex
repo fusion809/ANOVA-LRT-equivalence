@@ -1,0 +1,242 @@
+\documentclass[12pt,a4paper,openright]{article}
+\setcounter{secnumdepth}{0}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{sansmath}
+\usepackage{pst-eucl}
+\usepackage[UKenglish]{isodate}
+\usepackage[UKenglish]{babel}
+\usepackage{float}
+\usepackage[numbered,framed]{matlab-prettifier}
+\usepackage[T1]{fontenc}
+\usepackage{setspace}
+\usepackage{sectsty}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=black,bookmarksopen=true]{hyperref}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\eqn}[1]{Equation \ref{#1}}
+\newcommand{\ovY}{\overline{Y}}
+\newcommand{\wmu}{\widehat{\mu}}
+\newcommand{\wst}{\widehat{\sigma^2}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\RR}{\mathrm{RR}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\MSE}{\mathrm{MSE}}
+\newcommand{\SST}{\mathrm{SST}}
+\newcommand{\MST}{\mathrm{MST}}
+\newcommand{\SSE}{\mathrm{SSE}}
+\newcommand{\SSS}{\mathrm{SS}}
+\newcommand{\SSTotal}{\mathrm{Total\hspace{0.1cm}SS}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\eff}{\mathrm{eff}}
+\newcommand{\CM}{\mathrm{CM}}
+\newcommand{\corr}{\mathrm{corr}}
+\newcommand{\Poisson}{\mathrm{Poisson}}
+\newcommand{\Binomial}{\mathrm{Binomial}}
+\setlength{\parindent}{0pt}
+\renewcommand{\baselinestretch}{2.0}
+\usepackage[margin=0.1in]{geometry}
+\title{Likelihood ratio test equivalence to one-way ANOVA F-test}
+\author{Brenton Horne}
+
+\begin{document}
+	\maketitle
+	
+	\tableofcontents
+	
+	\newpage
+	
+	\section{Hypotheses and notation}
+	Let $Y_{ij}$ denote the $j$th observation of the $i$th treatment group. Where $i=1, 2, 3, ..., m$ and $j=1, 2, 3, ..., n_i$. Under the null hypothesis: $Y_{ij} \sim \mathrm{N}(\mu, \sigma^2)$. Under the alternative hypothesis: $Y_{ij} \sim \mathrm{N}(\mu_i, \sigma^2)$, where $\mu_i \neq \mu_k$ for at least one pair of $i$ and $k$ values.
+	
+	\section{Definitions}
+	\begin{align*}
+		n &= \sum_{i=1}^m n_i \\
+		\overline{Y} &= \dfrac{1}{n} \sum_{i=1}^m \sum_{j=1}^{n_i} Y_{ij} \\
+		\overline{Y}_i &= \dfrac{1}{n_i} \sum_{j=1}^{n_i} Y_{ij} \\
+		\SSTotal &= \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 \\
+		\SST &= \sum_{i=1}^m \sum_{j=1}^{n_i} (\ovY_i-\ovY)^2 \\
+		\SSE &= \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2.
+	\end{align*}
+	We will later show that:
+	\begin{align*}
+		\SSE &= \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 - (\ovY_i-\ovY)^2 \\
+		&= \SSTotal - \SST.
+	\end{align*}
+	We will later use $\delta_{ik}$, which is the Kronecker delta symbol. It equals 0 if $i\neq k$ and 1 otherwise.
+	
+	$F$ statistic for the one-way ANOVA test is:
+	\begin{align*}
+		F &= \dfrac{\MST}{\MSE} \\
+		&= \dfrac{\SST/(m-1)}{\SSE/(n-m)} \\
+		&= \dfrac{(n-m)\SST}{(m-1)\SSE}.
+	\end{align*}
+	Which has $m-1$ numerator and $n-m$ denominator degrees of freedom.
+	
+	\section{Derivation of maximum likelihood under the null}
+	Let us denote the likelihood under the null as $L(H_0)$. 
+	\begin{align}
+		L(H_0) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2}} \exp{\left(-\dfrac{1}{2\sigma^2} (Y_{ij}-\mu)^2\right)} \nonumber\\
+		&= (2\pi \sigma^2)^{-n/2}\exp{\left(-\dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu)^2\right)}. \label{LH0}\\
+		\ln{L(H_0)} &= -\dfrac{n}{2} \ln{2\pi} - \dfrac{n}{2}\ln{\sigma^2} - \dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu)^2. \nonumber
+	\end{align}
+
+	Setting the partial derivative with respect to $\sigma^2$ to zero to maximize the likelihood:
+	\begin{align}
+		\dfrac{\partial \ln{L(H_0)}}{\partial \sigma^2} \Bigm\lvert_{\sigma^2=\wst, \hspace{0.1cm}\mu = \wmu} &= -\dfrac{n}{2\wst} + \dfrac{1}{2\widehat{\sigma^4}}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 \nonumber\\
+		&= 0. \label{varNull}
+	\end{align}
+
+	Multiplying \eqn{varNull} by $2\widehat{\sigma^4}$ yields:
+	\begin{align}
+		-n\wst + \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 &= 0\nonumber\\
+		\implies \wst &= \dfrac{1}{n} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\hat{\mu})^2. \label{wst0}
+	\end{align}
+
+	Next we will set the partial derivative with respect to $\mu$ to zero to find the MLE of $\mu$:
+	
+	\begin{align}
+		\dfrac{\partial \ln{L(H_0)}}{\partial \mu} \Bigm\lvert_{\sigma^2 = \wst, \hspace{0.1cm}\mu=\wmu} &= -\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} 2\cdot (-1)\cdot (Y_{ij}-\wmu) \nonumber\\
+		&= \dfrac{1}{\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu) \nonumber\\
+		&= 0. \label{muNull}
+	\end{align}
+
+	Multiplying \eqn{muNull} by $\wst$ yields:
+	\begin{align}
+		\therefore \hspace{0.2cm} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu) &= 0 \nonumber\\
+		n\ovY - n\wmu &= 0 \nonumber \\
+		\implies \wmu &= \ovY. \label{wmu0}
+	\end{align}
+
+	Substituting Equations \ref{wst0} and \ref{wmu0} into \eqn{LH0} yields:
+	\begin{align}
+		L(H_0) &= (2\pi\wst)^{-n/2} \exp{\left(-\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)} \nonumber\\
+		&= (2\pi \wst)^{-n/2} \exp\left(-\dfrac{n}{2}\right) \nonumber \\
+		&= (2\pi e\wst)^{-n/2} \nonumber \\
+		&= \left(\dfrac{2\pi e}{n} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2\right)^{-n/2}.\label{MLE0}
+	\end{align}
+
+	\section{Derivation of the unrestricted maximum likelihood}
+	Let us denote the unrestricted likelihood as $L_u$. 
+	\begin{align}
+		L_u &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2}} \exp{\left(-\dfrac{1}{2\sigma^2} (Y_{ij}-\mu_i)^2\right)} \nonumber\\
+		&= (2\pi \sigma^2)^{-n/2} \exp{\left(-\dfrac{1}{2\sigma^2}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2\right)} \label{Lu}\\
+		\ln{L_u} &= -\dfrac{n}{2}\ln{2\pi} - \dfrac{n}{2} \ln{\sigma^2} - \dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2 \nonumber
+	\end{align}
+
+	Setting the partial derivative with respect to $\sigma^2$ to zero to find the MLE of $\sigma^2$:
+	\begin{align}
+		\dfrac{\partial \ln{L_u}}{\partial \sigma^2} \Bigm\lvert_{\sigma^2=\wst, \hspace{0.1cm}\mu_i = \wmu_i} &= -\dfrac{n}{2\wst} + \dfrac{1}{2\widehat{\sigma^4}} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \nonumber \\
+		&=0. \label{varUnrest}
+	\end{align}
+
+	Multiplying \eqn{varUnrest} by $2\widehat{\sigma^4}$ yields:
+	\begin{align}
+		-n\wst + \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 &= 0 \nonumber \\
+		\implies \wst &= \dfrac{1}{n}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \label{wstu}
+	\end{align}
+	
+	Setting the partial derivative with respect to $\mu_i$ to zero to find the MLE of $\mu_k$:
+	\begin{align}
+		\dfrac{\partial \ln{L_u}}{\partial \mu_k} \Bigm\lvert_{\sigma^2=\wst,\hspace{0.1cm}\mu_i=\wmu_i} &= -\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} 2\cdot (-1)\cdot (Y_{ij}-\wmu_i)\delta_{ik} \nonumber \\
+		&= 0 \nonumber\\
+		\dfrac{1}{\wst}\sum_{j=1}^{n_k} (Y_{kj}-\wmu_k) &= 0. \label{muUnrest}
+	\end{align}
+
+	Multiplying both sides of \eqn{muUnrest} by $\wst$ yields:
+	\begin{align}
+		\sum_{j=1}^{n_k} (Y_{kj}-\wmu_k) &= 0 \nonumber \\
+		n_k\ovY_k - n_k\wmu_k &= 0 \nonumber \\ 
+		\implies \wmu_k &= \ovY_k. \label{wmuu}
+	\end{align}
+
+	Substituting Equations \ref{wstu} and \ref{wmuu} into \eqn{Lu} yields:
+	\begin{align}
+		L_u &= (2\pi \wst)^{-n/2} \exp{\left(-\dfrac{1}{2\wst}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2\right)} \nonumber \\
+		&= (2\pi \wst)^{-n/2} \exp{\left(-\dfrac{n}{2}\right)} \nonumber \\
+		&= \left(\dfrac{2\pi e}{n} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n/2}. \label{MLEu}
+	\end{align}
+
+	\section{Likelihood ratio}
+	\begin{align}
+		\lambda &= \dfrac{L(H_0)}{L_u} \nonumber\\
+		&= \left(\dfrac{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2}\right)^{n/2} \nonumber \\
+		\lambda^{-2/n} &= \dfrac{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2}{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}.\label{ratio}
+	\end{align}
+
+	Let us try to simplify our denominator in \eqn{ratio}:
+	\begin{align}
+		\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2 &= \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY+\ovY - \ovY_i)^2 \nonumber\\
+		&= \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 + 2(Y_{ij}-\ovY)(\ovY - \ovY_i) + (\ovY-\ovY_i)^2 \label{totalSS}
+	\end{align}
+
+	Next let us try to simplify the second term in \eqn{totalSS}.
+	\begin{align}
+		\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)(\ovY - \ovY_i) &= \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)\ovY - (Y_{ij}-\ovY)\ovY_i \label{ratio2ndterm}
+	\end{align}
+	Let us now simplify the first term in \eqn{ratio2ndterm}.
+	\begin{align}
+		\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)\ovY &= \ovY \sum_{i=1}^m \sum_{j=1}^{n_i} Y_{ij}-\ovY \nonumber \\
+		&= \ovY (n\ovY - \sum_{i=1}^m \sum_{j=1}^{n_i} \ovY) \nonumber \\
+		&= \ovY(n\ovY - n\ovY) \nonumber \\
+		&= 0. \label{zeroSumDiffMean}
+	\end{align}
+
+	Substituting \eqn{zeroSumDiffMean} into \eqn{ratio2ndterm} yields:
+	\begin{align}
+		\therefore \hspace{0.2cm} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)(\ovY - \ovY_i) &= \sum_{i=1}^m \sum_{j=1}^{n_i} - (Y_{ij}-\ovY)\ovY_i \nonumber \\
+		&= -\sum_{i=1}^m \ovY_i \sum_{j=1}^{n_i} (Y_{ij}-\ovY) \nonumber \\ 
+		&= -\sum_{i=1}^m \ovY_i (n_i \ovY_i - n_i \ovY) \nonumber \\
+		&= -\sum_{i=1}^m n_i \ovY_i (\ovY_i - \ovY).\label{final}
+	\end{align}
+
+	\eqn{final} can be shown to be equivalent to $\displaystyle -\sum_{i=1}^m \sum_{j=1}^{n_i} (\ovY_i-\ovY)^2$. Namely:
+	\begin{align}
+		\sum_{i=1}^m \sum_{j=1}^{n_i} (\ovY_i-\ovY)^2 &= \sum_{i=1}^m n_i (\ovY_i-\ovY)^2 \nonumber \\
+		&= \sum_{i=1}^m n_i (\ovY_i - \ovY)(\ovY_i - \ovY) \nonumber \\
+		&= \sum_{i=1}^m n_i \ovY_i (\ovY_i - \ovY) - n_i\ovY(\ovY_i - \ovY) \nonumber \\
+		&= \left(\sum_{i=1}^m n_i \ovY_i (\ovY_i - \ovY)\right) - \ovY \sum_{i=1}^mn_i (\ovY_i-\ovY) \nonumber\\
+		&= \left(\sum_{i=1}^m n_i \ovY_i (\ovY_i - \ovY)\right) - \ovY \sum_{i=1}^mn_i \ovY_i - n_i\ovY. \label{SSTEqn}
+	\end{align}
+
+	Simplifying the second term in \eqn{SSTEqn} yields:
+	\begin{align}
+		\sum_{i=1}^m n_i \ovY_i &= \sum_{i=1}^m n_i \dfrac{1}{n_i} \sum_{j=1}^{n_i} Y_{ij} \nonumber \\
+		&= \sum_{i=1}^m \sum_{j=1}^{n_i} Y_{ij} \nonumber \\
+		&= n\ovY. \label{meansEquiv}
+	\end{align}
+
+	Substituting \eqn{meansEquiv} into \eqn{SSTEqn} yields:
+	\begin{align*}
+		\sum_{i=1}^m \sum_{j=1}^{n_i} (\ovY_i-\ovY)^2 &= \left(\sum_{i=1}^m n_i \ovY_i (\ovY_i - \ovY)\right) - \ovY (n\ovY -\sum_{i=1}^m n_i\ovY) \\
+		&= \left(\sum_{i=1}^m n_i \ovY_i (\ovY_i - \ovY)\right) - \ovY (n\ovY - \ovY \sum_{i=1}^m n_i) \\
+		&= \left(\sum_{i=1}^m n_i \ovY_i (\ovY_i - \ovY)\right) - \ovY (n\ovY - \ovY n) \\
+		&= \sum_{i=1}^m n_i \ovY_i (\ovY_i - \ovY).
+	\end{align*}
+	
+	Therefore:
+	\begin{align*}
+		\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)(\ovY - \ovY_i) &= -\sum_{i=1}^m n_i (\ovY_i-\ovY)^2 \\
+		&= -\sum_{i=1}^m \sum_{j=1}^{n_i} (\ovY_i-\ovY)^2.
+	\end{align*}
+
+	Thus \eqn{totalSS} becomes:
+	\begin{align*}
+		\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2 &= \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 - 2(\ovY_i-\ovY)^2 + (\ovY_i-\ovY)^2 \\
+		&= \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 - (\ovY_i-\ovY)^2.
+	\end{align*}
+
+	Therefore \eqn{ratio} becomes:
+	\begin{align*}
+		\lambda^{-2/n} &= \dfrac{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2}{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 - (\ovY_i-\ovY)^2} \\
+		&= \dfrac{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 - (\ovY_i-\ovY)^2 + (\ovY_i-\ovY)^2}{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 - (\ovY_i-\ovY)^2} \\
+		&= 1 + \dfrac{\sum_{i=1}^m \sum_{j=1}^{n_i} (\ovY_i-\ovY)^2}{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2 - (\ovY_i-\ovY)^2} \\
+		&= 1 + \dfrac{\SST}{\SSE} \\
+		&= 1 + \dfrac{F(m-1)}{(n-m)} \\
+		\implies \lambda &= \left(\dfrac{1}{1+\dfrac{F(m-1)}{n-m}}\right)^{n/2}.
+	\end{align*}
+
+	Therefore as $\lambda$ is a monotone decreasing function of $F$, testing whether $\lambda < k$ is equivalent to testing whether $F > k^{*}$, which forms the basis of the one-way ANOVA F-test.  
+\end{document}
