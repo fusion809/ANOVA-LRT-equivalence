@@ -76,7 +76,8 @@
 	Which has $m-1$ numerator and $n-m$ denominator degrees of freedom.
 	
 	\section{Derivation of maximum likelihood under the null}
-	Let us denote the parameter space under the null hypothesis as $\Omega_0 = \left\{(\mu, \sigma^2):\hspace{0.1cm} \E(Y_{ij}) = \mu, \hspace{0.1cm}\sigma^2 > 0\right\}$. The parameter space under the alternative hypothesis is $\Omega_a = \left\{(\mu_i, \sigma^2): \hspace{0.1cm}\mu_i \neq \mu_j \hspace{0.1cm}\mathrm{for\hspace{0.1cm}at\hspace{0.1cm}least\hspace{0.1cm}one\hspace{0.1cm}pair\hspace{0.1cm}of\hspace{0.1cm}}i\mathrm{\hspace{0.1cm}and\hspace{0.1cm}}j\mathrm{\hspace{0.1cm}values},\hspace{0.1cm} \sigma^2 > 0\right\}$. $\Omega = \Omega_0 \cup \Omega_a$. 
+	Let us denote the parameter space under the null hypothesis as $\Omega_0 = \left\{(\mu, \sigma^2):\hspace{0.1cm} -\infty < \mu < \infty, \hspace{0.1cm}\sigma^2 > 0\right\}$. The parameter space under the alternative hypothesis is \\
+	$\Omega_a = \left\{(\mu_i, \sigma^2): \hspace{0.1cm}\mu_i \neq \mu_j \hspace{0.1cm}\mathrm{for\hspace{0.1cm}at\hspace{0.1cm}least\hspace{0.1cm}one\hspace{0.1cm}pair\hspace{0.1cm}of\hspace{0.1cm}}i\mathrm{\hspace{0.1cm}and\hspace{0.1cm}}j\mathrm{\hspace{0.1cm}values},\hspace{0.1cm}-\infty < \mu_i < \infty,\hspace{0.1cm} \sigma^2 > 0\right\}$. Our unrestricted parameter space is given by $\Omega = \Omega_0 \cup \Omega_a$. 
 	\begin{align}
 		L(\Omega_0) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2}} \exp{\left(-\dfrac{1}{2\sigma^2} (Y_{ij}-\mu)^2\right)} \nonumber\\
 		&= (2\pi \sigma^2)^{-n/2}\exp{\left(-\dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu)^2\right)}. \label{LH0}\\
@@ -118,7 +119,6 @@
 	\end{align}
 
 	\section{Derivation of the unrestricted maximum likelihood}
-	Let us denote the unrestricted parameter space as $\Omega$.
 	\begin{align}
 		L(\Omega) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2}} \exp{\left(-\dfrac{1}{2\sigma^2} (Y_{ij}-\mu_i)^2\right)} \nonumber\\
 		&= (2\pi \sigma^2)^{-n/2} \exp{\left(-\dfrac{1}{2\sigma^2}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2\right)} \label{Lu}\\
