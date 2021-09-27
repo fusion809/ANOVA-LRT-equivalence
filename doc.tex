@@ -76,16 +76,16 @@
 	Which has $m-1$ numerator and $n-m$ denominator degrees of freedom.
 	
 	\section{Derivation of maximum likelihood under the null}
-	Let us denote the likelihood under the null as $L(H_0)$. 
+	Let us denote the parameter space under the null hypothesis as $\Omega_0 = \left\{(\mu, \sigma^2):\hspace{0.1cm} \E(Y_{ij}) = \mu, \hspace{0.1cm}\sigma^2 > 0\right\}$. The parameter space under the alternative hypothesis is $\Omega_a = \left\{(\mu_i, \sigma^2): \hspace{0.1cm}\mu_i \neq \mu_j \hspace{0.1cm}\mathrm{for\hspace{0.1cm}at\hspace{0.1cm}least\hspace{0.1cm}one\hspace{0.1cm}pair\hspace{0.1cm}of\hspace{0.1cm}}i\mathrm{\hspace{0.1cm}and\hspace{0.1cm}}j\mathrm{\hspace{0.1cm}values},\hspace{0.1cm} \sigma^2 > 0\right\}$. $\Omega = \Omega_0 \cup \Omega_a$. 
 	\begin{align}
-		L(H_0) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2}} \exp{\left(-\dfrac{1}{2\sigma^2} (Y_{ij}-\mu)^2\right)} \nonumber\\
+		L(\Omega_0) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2}} \exp{\left(-\dfrac{1}{2\sigma^2} (Y_{ij}-\mu)^2\right)} \nonumber\\
 		&= (2\pi \sigma^2)^{-n/2}\exp{\left(-\dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu)^2\right)}. \label{LH0}\\
-		\ln{L(H_0)} &= -\dfrac{n}{2} \ln{2\pi} - \dfrac{n}{2}\ln{\sigma^2} - \dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu)^2. \nonumber
+		\ln{L(\Omega_0)} &= -\dfrac{n}{2} \ln{2\pi} - \dfrac{n}{2}\ln{\sigma^2} - \dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu)^2. \nonumber
 	\end{align}
 
 	Setting the partial derivative with respect to $\sigma^2$ to zero to maximize the likelihood:
 	\begin{align}
-		\dfrac{\partial \ln{L(H_0)}}{\partial \sigma^2} \Bigm\lvert_{\sigma^2=\wst, \hspace{0.1cm}\mu = \wmu} &= -\dfrac{n}{2\wst} + \dfrac{1}{2\widehat{\sigma^4}}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 \nonumber\\
+		\dfrac{\partial \ln{L(\Omega_0)}}{\partial \sigma^2} \Bigm\lvert_{\sigma^2=\wst, \hspace{0.1cm}\mu = \wmu} &= -\dfrac{n}{2\wst} + \dfrac{1}{2\widehat{\sigma^4}}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2 \nonumber\\
 		&= 0. \label{varNull}
 	\end{align}
 
@@ -96,9 +96,8 @@
 	\end{align}
 
 	Next we will set the partial derivative with respect to $\mu$ to zero to find the MLE of $\mu$:
-	
 	\begin{align}
-		\dfrac{\partial \ln{L(H_0)}}{\partial \mu} \Bigm\lvert_{\sigma^2 = \wst, \hspace{0.1cm}\mu=\wmu} &= -\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} 2\cdot (-1)\cdot (Y_{ij}-\wmu) \nonumber\\
+		\dfrac{\partial \ln{L(\Omega_0)}}{\partial \mu} \Bigm\lvert_{\sigma^2 = \wst, \hspace{0.1cm}\mu=\wmu} &= -\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} 2\cdot (-1)\cdot (Y_{ij}-\wmu) \nonumber\\
 		&= \dfrac{1}{\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu) \nonumber\\
 		&= 0. \label{muNull}
 	\end{align}
@@ -112,23 +111,23 @@
 
 	Substituting Equations \ref{wst0} and \ref{wmu0} into \eqn{LH0} yields:
 	\begin{align}
-		L(H_0) &= (2\pi\wst)^{-n/2} \exp{\left(-\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)} \nonumber\\
+		L(\widehat{\Omega_0}) &= (2\pi\wst)^{-n/2} \exp{\left(-\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu)^2\right)} \nonumber\\
 		&= (2\pi \wst)^{-n/2} \exp\left(-\dfrac{n}{2}\right) \nonumber \\
 		&= (2\pi e\wst)^{-n/2} \nonumber \\
 		&= \left(\dfrac{2\pi e}{n} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2\right)^{-n/2}.\label{MLE0}
 	\end{align}
 
 	\section{Derivation of the unrestricted maximum likelihood}
-	Let us denote the unrestricted likelihood as $L_u$. 
+	Let us denote the unrestricted parameter space as $\Omega$.
 	\begin{align}
-		L_u &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2}} \exp{\left(-\dfrac{1}{2\sigma^2} (Y_{ij}-\mu_i)^2\right)} \nonumber\\
+		L(\Omega) &= \prod_{i=1}^m \prod_{j=1}^{n_i} \dfrac{1}{\sqrt{2\pi \sigma^2}} \exp{\left(-\dfrac{1}{2\sigma^2} (Y_{ij}-\mu_i)^2\right)} \nonumber\\
 		&= (2\pi \sigma^2)^{-n/2} \exp{\left(-\dfrac{1}{2\sigma^2}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2\right)} \label{Lu}\\
-		\ln{L_u} &= -\dfrac{n}{2}\ln{2\pi} - \dfrac{n}{2} \ln{\sigma^2} - \dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2 \nonumber
+		\ln{L(\Omega)} &= -\dfrac{n}{2}\ln{2\pi} - \dfrac{n}{2} \ln{\sigma^2} - \dfrac{1}{2\sigma^2} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\mu_i)^2 \nonumber
 	\end{align}
 
 	Setting the partial derivative with respect to $\sigma^2$ to zero to find the MLE of $\sigma^2$:
 	\begin{align}
-		\dfrac{\partial \ln{L_u}}{\partial \sigma^2} \Bigm\lvert_{\sigma^2=\wst, \hspace{0.1cm}\mu_i = \wmu_i} &= -\dfrac{n}{2\wst} + \dfrac{1}{2\widehat{\sigma^4}} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \nonumber \\
+		\dfrac{\partial \ln{L(\Omega)}}{\partial \sigma^2} \Bigm\lvert_{\sigma^2=\wst, \hspace{0.1cm}\mu_i = \wmu_i} &= -\dfrac{n}{2\wst} + \dfrac{1}{2\widehat{\sigma^4}} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2 \nonumber \\
 		&=0. \label{varUnrest}
 	\end{align}
 
@@ -140,7 +139,7 @@
 	
 	Setting the partial derivative with respect to $\mu_i$ to zero to find the MLE of $\mu_k$:
 	\begin{align}
-		\dfrac{\partial \ln{L_u}}{\partial \mu_k} \Bigm\lvert_{\sigma^2=\wst,\hspace{0.1cm}\mu_i=\wmu_i} &= -\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} 2\cdot (-1)\cdot (Y_{ij}-\wmu_i)\delta_{ik} \nonumber \\
+		\dfrac{\partial \ln{L(\Omega)}}{\partial \mu_k} \Bigm\lvert_{\sigma^2=\wst,\hspace{0.1cm}\mu_i=\wmu_i} &= -\dfrac{1}{2\wst} \sum_{i=1}^m \sum_{j=1}^{n_i} 2\cdot (-1)\cdot (Y_{ij}-\wmu_i)\delta_{ik} \nonumber \\
 		&= 0 \nonumber\\
 		\dfrac{1}{\wst}\sum_{j=1}^{n_k} (Y_{kj}-\wmu_k) &= 0. \label{muUnrest}
 	\end{align}
@@ -154,14 +153,14 @@
 
 	Substituting Equations \ref{wstu} and \ref{wmuu} into \eqn{Lu} yields:
 	\begin{align}
-		L_u &= (2\pi \wst)^{-n/2} \exp{\left(-\dfrac{1}{2\wst}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2\right)} \nonumber \\
+		L(\widehat{\Omega}) &= (2\pi \wst)^{-n/2} \exp{\left(-\dfrac{1}{2\wst}\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\wmu_i)^2\right)} \nonumber \\
 		&= (2\pi \wst)^{-n/2} \exp{\left(-\dfrac{n}{2}\right)} \nonumber \\
 		&= \left(\dfrac{2\pi e}{n} \sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2\right)^{-n/2}. \label{MLEu}
 	\end{align}
 
 	\section{Likelihood ratio}
 	\begin{align}
-		\lambda &= \dfrac{L(H_0)}{L_u} \nonumber\\
+		\lambda &= \dfrac{L(\widehat{\Omega_0})}{L(\widehat{\Omega})} \nonumber\\
 		&= \left(\dfrac{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2}\right)^{n/2} \nonumber \\
 		\lambda^{-2/n} &= \dfrac{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY)^2}{\sum_{i=1}^m \sum_{j=1}^{n_i} (Y_{ij}-\ovY_i)^2}.\label{ratio}
 	\end{align}
